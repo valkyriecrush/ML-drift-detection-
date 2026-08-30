@@ -155,9 +155,4 @@ la traçabilité). Chaque alerte part en HTML (badge + couleur par priorité),
 et le résumé exécutif de fin de cycle part avec le rapport de diagnostic
 complet **en pièce jointe PDF**.
 
-## Historique technique
 
-Tous les bugs trouvés, les fixes appliqués et les preuves de vérification
-(tests, exécutions réelles) sont dans [`AUDIT_LOG.md`](AUDIT_LOG.md) --
-gardé séparé de ce README pour que celui-ci reste une présentation du
-projet, pas un changelog à faire défiler.
