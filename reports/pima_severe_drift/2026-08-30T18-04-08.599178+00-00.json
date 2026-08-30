@@ -1,0 +1,280 @@
+{
+  "model_id": "pima_severe_drift",
+  "cycle_timestamp": "2026-08-30T18:04:08.587672+00:00",
+  "generated_at": "2026-08-30T18:04:08.599178+00:00",
+  "overall_status": "critical",
+  "executive_summary": "Data drift: 5/8 feature(s) drifted (severity critical). Target drift (proxy): PSI=0.000, severity warning. Alerts: 1 critical, 2 warning.",
+  "data_drift": {
+    "overall_severity": "critical",
+    "total_features": 8,
+    "drifted_features": 5,
+    "drift_percentage": 62.5,
+    "features": [
+      {
+        "feature": "Pregnancies",
+        "type": "numeric",
+        "psi_score": 0.008999437248163975,
+        "norm_wasserstein_distance": 0.017447916666666657,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Glucose",
+        "type": "numeric",
+        "psi_score": 2.050971516799967,
+        "norm_wasserstein_distance": 1.5349151234567902,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "BloodPressure",
+        "type": "numeric",
+        "psi_score": 3.7542022928904,
+        "norm_wasserstein_distance": 0.8922726313273114,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "SkinThickness",
+        "type": "numeric",
+        "psi_score": 0.033865466284832765,
+        "norm_wasserstein_distance": 6.91945684523809,
+        "severity": "warning",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Insulin",
+        "type": "numeric",
+        "psi_score": 10.62599276763946,
+        "norm_wasserstein_distance": 2.3313646065690143,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.2995,
+        "new_categories": []
+      },
+      {
+        "feature": "BMI",
+        "type": "numeric",
+        "psi_score": 1.0948267265034497,
+        "norm_wasserstein_distance": 0.9874513507326006,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "DiabetesPedigreeFunction",
+        "type": "numeric",
+        "psi_score": 0.007445239765747451,
+        "norm_wasserstein_distance": 0.02731141067538119,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Age",
+        "type": "numeric",
+        "psi_score": 0.012237354247509047,
+        "norm_wasserstein_distance": 0.019990808823529375,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      }
+    ],
+    "timestamp": "2026-08-30T18:04:08.574164+00:00"
+  },
+  "target_drift": {
+    "status": "proxy",
+    "n_samples": 768,
+    "timestamp": "2026-08-30T18:04:08.587672+00:00",
+    "drift": {
+      "psi_score": 0.0,
+      "severity": "warning",
+      "is_drifted": true,
+      "norm_wasserstein_distance": 0.2396,
+      "details": {
+        "reference_mean": 0.3489583333333333,
+        "reference_std": 0.47664076087820645,
+        "current_mean": 0.5885416666666666,
+        "current_std": 0.49209793056249373,
+        "missing_rate": 0.0,
+        "n_missing": 0,
+        "n_total": 768,
+        "new_categories": [],
+        "note": "Proxy signal (predictions), needs confirmation with true labels."
+      }
+    }
+  },
+  "performance_drift": null,
+  "root_cause": null,
+  "alerts": [
+    {
+      "source_agent": "data_drift",
+      "priority": "critical",
+      "title": "High model-impact drift on 3 feature(s)",
+      "message": "Affected features: Glucose, SkinThickness, Insulin.\n- Glucose: 'Glucose' is at the 88th percentile of SHAP importance among tracked features (threshold=75th, raw importance=0.5135): the drift directly affects predictions.\n- SkinThickness: 'SkinThickness' is at the 75th percentile of SHAP importance among tracked features (threshold=75th, raw importance=0.2962): the drift directly affects predictions.\n- Insulin: 'Insulin' is at the 100th percentile of SHAP importance among tracked features (threshold=75th, raw importance=1.5079): the drift directly affects predictions.",
+      "context": {
+        "drift_percentage": 62.5,
+        "features": [
+          "Glucose",
+          "SkinThickness",
+          "Insulin"
+        ],
+        "psi_scores": {
+          "Glucose": 2.050971516799967,
+          "SkinThickness": 0.033865466284832765,
+          "Insulin": 10.62599276763946
+        },
+        "shap_adjusted": true
+      },
+      "recommended_action": "FINAL VERDICT -- pipeline issue confirmed, do NOT retrain yet: Insulin: 29.9% missing values this batch. Fix ingestion for Insulin first (schema, upstream source, mapping of new categories), then re-run this cycle on clean data before deciding whether real drift remains.",
+      "remediation_type": "data_pipeline_investigation",
+      "timestamp": "2026-08-30T18:04:08.595178+00:00"
+    },
+    {
+      "source_agent": "data_drift",
+      "priority": "warning",
+      "title": "Drift to monitor on 2 feature(s)",
+      "message": "Affected features: BloodPressure, BMI.\n- BloodPressure: 'BloodPressure' has low SHAP importance (percentile 25) and isn't correlated with an influential feature: likely negligible model impact despite the statistical drift.\n- BMI: 'BMI' has low SHAP importance (percentile 50) and isn't correlated with an influential feature: likely negligible model impact despite the statistical drift.",
+      "context": {
+        "drift_percentage": 62.5,
+        "features": [
+          "BloodPressure",
+          "BMI"
+        ],
+        "psi_scores": {
+          "BloodPressure": 3.7542022928904,
+          "BMI": 1.0948267265034497
+        },
+        "shap_adjusted": true
+      },
+      "recommended_action": "No immediate action: risk is indirect (correlated with a key feature) or undetermined (missing SHAP/correlation data). Re-evaluate next cycle.",
+      "remediation_type": "monitor",
+      "timestamp": "2026-08-30T18:04:08.595178+00:00"
+    },
+    {
+      "source_agent": "target_drift",
+      "priority": "warning",
+      "title": "Early target-drift signal (proxy, unconfirmed)",
+      "message": "PSI on predictions (0.000) exceeds the drift threshold. True labels not yet available: needs confirmation.",
+      "context": {
+        "n_samples": 768,
+        "psi_score": 0.0,
+        "severity": "warning"
+      },
+      "recommended_action": "Don't retrain on this signal alone -- it's drift on PREDICTIONS, not ground truth. Wait for the next labeled cycle to confirm; investigate manually if it persists unconfirmed for 2-3 cycles.",
+      "remediation_type": "monitor",
+      "timestamp": "2026-08-30T18:04:08.595178+00:00"
+    }
+  ],
+  "remediation_actions": [
+    {
+      "source_alert_title": "High model-impact drift on 3 feature(s)",
+      "source_agent": "data_drift",
+      "priority": "critical",
+      "action_type": "data_pipeline_investigation",
+      "description": "FINAL VERDICT -- pipeline issue confirmed, do NOT retrain yet: Insulin: 29.9% missing values this batch. Fix ingestion for Insulin first (schema, upstream source, mapping of new categories), then re-run this cycle on clean data before deciding whether real drift remains.",
+      "automatable": true,
+      "requires_approval": false,
+      "urgency": "urgent",
+      "sla": "within 24h",
+      "is_primary": true,
+      "superseded_by": null,
+      "payload": {
+        "source_agent": "data_drift",
+        "priority": "critical",
+        "drift_percentage": 62.5,
+        "features": [
+          "Glucose",
+          "SkinThickness",
+          "Insulin"
+        ],
+        "psi_scores": {
+          "Glucose": 2.050971516799967,
+          "SkinThickness": 0.033865466284832765,
+          "Insulin": 10.62599276763946
+        },
+        "shap_adjusted": true
+      },
+      "status": "executed",
+      "timestamp": "2026-08-30T18:04:08.596179+00:00"
+    },
+    {
+      "source_alert_title": "Drift to monitor on 2 feature(s)",
+      "source_agent": "data_drift",
+      "priority": "warning",
+      "action_type": "monitor",
+      "description": "No immediate action: risk is indirect (correlated with a key feature) or undetermined (missing SHAP/correlation data). Re-evaluate next cycle.",
+      "automatable": true,
+      "requires_approval": false,
+      "urgency": "normal",
+      "sla": "next working cycle",
+      "is_primary": true,
+      "superseded_by": null,
+      "payload": {
+        "source_agent": "data_drift",
+        "priority": "warning",
+        "drift_percentage": 62.5,
+        "features": [
+          "BloodPressure",
+          "BMI"
+        ],
+        "psi_scores": {
+          "BloodPressure": 3.7542022928904,
+          "BMI": 1.0948267265034497
+        },
+        "shap_adjusted": true
+      },
+      "status": "executed",
+      "timestamp": "2026-08-30T18:04:08.596179+00:00"
+    },
+    {
+      "source_alert_title": "Early target-drift signal (proxy, unconfirmed)",
+      "source_agent": "target_drift",
+      "priority": "warning",
+      "action_type": "monitor",
+      "description": "Don't retrain on this signal alone -- it's drift on PREDICTIONS, not ground truth. Wait for the next labeled cycle to confirm; investigate manually if it persists unconfirmed for 2-3 cycles.",
+      "automatable": true,
+      "requires_approval": false,
+      "urgency": "normal",
+      "sla": "next working cycle",
+      "is_primary": true,
+      "superseded_by": null,
+      "payload": {
+        "source_agent": "target_drift",
+        "priority": "warning",
+        "n_samples": 768,
+        "psi_score": 0.0,
+        "severity": "warning"
+      },
+      "status": "executed",
+      "timestamp": "2026-08-30T18:04:08.596179+00:00"
+    }
+  ]
+}

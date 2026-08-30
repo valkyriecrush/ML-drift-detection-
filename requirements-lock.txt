@@ -1,0 +1,32 @@
+# requirements-lock.txt -- versions EXACTES sur lesquelles la suite de
+# tests (tests/) et les 3 scenarios (test_no_drift.py, test_normal_drift.py,
+# test_severe_drift.py) ont ete verifies apres les corrections de l'audit.
+#
+# AUDIT P2 FIX (hygiene du depot) : avant ce fichier, aucun lock file
+# (pip-compile / poetry.lock) n'existait -- seulement deux requirements.txt
+# avec des bornes ouvertes (>=), sans garantie de reproductibilite entre
+# environnements. Ce fichier fige les versions testees ; les bornes ouvertes
+# de pyproject.toml restent la source de verite pour la compatibilite.
+#
+# Regenerer avec : pip freeze | grep -iE <paquets ci-dessous> (pas de
+# generation via pip-compile ici : environnement d'audit sans acces reseau
+# vers un index de hashes -- a executer dans un environnement CI avec acces
+# reseau pour produire un vrai lock file avec hashes).
+
+fastapi==0.141.1
+joblib==1.5.3
+langgraph==1.2.11
+langgraph-checkpoint==4.2.0
+langgraph-prebuilt==1.1.0
+langgraph-sdk==0.4.3
+lightgbm==4.7.0
+numpy==2.4.4
+pandas==3.0.2
+pytest==9.1.1
+PyYAML==6.0.3
+requests==2.33.1
+scikit-learn==1.8.0
+scipy==1.17.1
+shap==0.52.0
+uvicorn==0.52.4
+xgboost==3.4.1

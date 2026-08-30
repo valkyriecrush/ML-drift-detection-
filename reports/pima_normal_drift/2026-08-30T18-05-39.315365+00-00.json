@@ -1,0 +1,231 @@
+{
+  "model_id": "pima_normal_drift",
+  "cycle_timestamp": "2026-08-30T18:05:39.307360+00:00",
+  "generated_at": "2026-08-30T18:05:39.315365+00:00",
+  "overall_status": "critical",
+  "executive_summary": "Data drift: 2/8 feature(s) drifted (severity critical). Target drift (proxy): PSI=0.000, severity none. Alerts: 1 critical, 1 warning. 1 remediation action(s) pending human approval.",
+  "data_drift": {
+    "overall_severity": "critical",
+    "total_features": 8,
+    "drifted_features": 2,
+    "drift_percentage": 25.0,
+    "features": [
+      {
+        "feature": "Pregnancies",
+        "type": "numeric",
+        "psi_score": 0.0004690641342678369,
+        "norm_wasserstein_distance": 0.00515061936936928,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Glucose",
+        "type": "numeric",
+        "psi_score": 0.10221126392984858,
+        "norm_wasserstein_distance": 0.22530849239029702,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "BloodPressure",
+        "type": "numeric",
+        "psi_score": 0.0002579511273689436,
+        "norm_wasserstein_distance": 0.009497730152027062,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "SkinThickness",
+        "type": "numeric",
+        "psi_score": 0.0003015561692410547,
+        "norm_wasserstein_distance": 0.008034708815958505,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Insulin",
+        "type": "numeric",
+        "psi_score": 0.00040394878145444673,
+        "norm_wasserstein_distance": 0.027599439458114893,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "BMI",
+        "type": "numeric",
+        "psi_score": 0.11819319066631481,
+        "norm_wasserstein_distance": 0.240637017933948,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "DiabetesPedigreeFunction",
+        "type": "numeric",
+        "psi_score": 0.00043503751030586987,
+        "norm_wasserstein_distance": 0.009672963404581103,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Age",
+        "type": "numeric",
+        "psi_score": 0.0005371355572488607,
+        "norm_wasserstein_distance": 0.002494452172760968,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      }
+    ],
+    "timestamp": "2026-08-30T18:05:39.296851+00:00"
+  },
+  "target_drift": {
+    "status": "proxy",
+    "n_samples": 740,
+    "timestamp": "2026-08-30T18:05:39.307360+00:00",
+    "drift": {
+      "psi_score": 0.0,
+      "severity": "none",
+      "is_drifted": false,
+      "norm_wasserstein_distance": 0.0348,
+      "details": {
+        "reference_mean": 0.3489583333333333,
+        "reference_std": 0.47664076087820645,
+        "current_mean": 0.3837837837837838,
+        "current_std": 0.4863062729272425,
+        "missing_rate": 0.0,
+        "n_missing": 0,
+        "n_total": 740,
+        "new_categories": []
+      }
+    }
+  },
+  "performance_drift": null,
+  "root_cause": null,
+  "alerts": [
+    {
+      "source_agent": "data_drift",
+      "priority": "critical",
+      "title": "High model-impact drift on 1 feature(s)",
+      "message": "Affected features: Glucose.\n- Glucose: 'Glucose' is at the 88th percentile of SHAP importance among tracked features (threshold=75th, raw importance=0.5135): the drift directly affects predictions.",
+      "context": {
+        "drift_percentage": 25.0,
+        "features": [
+          "Glucose"
+        ],
+        "psi_scores": {
+          "Glucose": 0.10221126392984858
+        },
+        "shap_adjusted": true
+      },
+      "recommended_action": "FINAL VERDICT -- retrain: batch is clean (no missing-value spike, no new category) on the drifted feature(s), so this is a genuine population shift, not a data-quality artifact. Prioritize Glucose (direct model impact per SHAP). Check for a root_cause alert this cycle before scheduling the retrain.",
+      "remediation_type": "retrain",
+      "timestamp": "2026-08-30T18:05:39.312368+00:00"
+    },
+    {
+      "source_agent": "data_drift",
+      "priority": "warning",
+      "title": "Drift to monitor on 1 feature(s)",
+      "message": "Affected features: BMI.\n- BMI: 'BMI' has low SHAP importance (percentile 50) and isn't correlated with an influential feature: likely negligible model impact despite the statistical drift.",
+      "context": {
+        "drift_percentage": 25.0,
+        "features": [
+          "BMI"
+        ],
+        "psi_scores": {
+          "BMI": 0.11819319066631481
+        },
+        "shap_adjusted": true
+      },
+      "recommended_action": "No immediate action: risk is indirect (correlated with a key feature) or undetermined (missing SHAP/correlation data). Re-evaluate next cycle.",
+      "remediation_type": "monitor",
+      "timestamp": "2026-08-30T18:05:39.312368+00:00"
+    }
+  ],
+  "remediation_actions": [
+    {
+      "source_alert_title": "High model-impact drift on 1 feature(s)",
+      "source_agent": "data_drift",
+      "priority": "critical",
+      "action_type": "retrain",
+      "description": "FINAL VERDICT -- retrain: batch is clean (no missing-value spike, no new category) on the drifted feature(s), so this is a genuine population shift, not a data-quality artifact. Prioritize Glucose (direct model impact per SHAP). Check for a root_cause alert this cycle before scheduling the retrain.",
+      "automatable": true,
+      "requires_approval": true,
+      "urgency": "urgent",
+      "sla": "within 24h",
+      "is_primary": true,
+      "superseded_by": null,
+      "payload": {
+        "source_agent": "data_drift",
+        "priority": "critical",
+        "drift_percentage": 25.0,
+        "features": [
+          "Glucose"
+        ],
+        "psi_scores": {
+          "Glucose": 0.10221126392984858
+        },
+        "shap_adjusted": true
+      },
+      "status": "pending",
+      "timestamp": "2026-08-30T18:05:39.313367+00:00"
+    },
+    {
+      "source_alert_title": "Drift to monitor on 1 feature(s)",
+      "source_agent": "data_drift",
+      "priority": "warning",
+      "action_type": "monitor",
+      "description": "No immediate action: risk is indirect (correlated with a key feature) or undetermined (missing SHAP/correlation data). Re-evaluate next cycle.",
+      "automatable": true,
+      "requires_approval": false,
+      "urgency": "normal",
+      "sla": "next working cycle",
+      "is_primary": true,
+      "superseded_by": null,
+      "payload": {
+        "source_agent": "data_drift",
+        "priority": "warning",
+        "drift_percentage": 25.0,
+        "features": [
+          "BMI"
+        ],
+        "psi_scores": {
+          "BMI": 0.11819319066631481
+        },
+        "shap_adjusted": true
+      },
+      "status": "executed",
+      "timestamp": "2026-08-30T18:05:39.313367+00:00"
+    }
+  ]
+}

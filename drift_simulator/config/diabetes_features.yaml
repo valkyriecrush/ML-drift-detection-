@@ -1,0 +1,35 @@
+version: "3.0"
+dataset_name: "diabetes_features"
+file_path: "data/diabetes_features.csv"
+shape:
+  rows: 768
+  columns: 15
+
+target:
+  name: "Outcome"
+  type: "binary"
+
+features:
+  numeric:
+    - "Pregnancies"
+    - "Glucose"
+    - "BloodPressure"
+    - "SkinThickness"
+    - "Insulin"
+    - "BMI"
+    - "DiabetesPedigreeFunction"
+    - "Age"
+
+  categorical:
+    - name: "Glucose_CAT"
+      categories: ["Normal", "Impaired_Glucose_Tolerance"]
+    - name: "BloodPressure_CAT"
+      categories: ["Normal", "Low_Blood_Pressure", "Prehypertension", "Hypertension", "Hypertensive_Crisis"]
+    - name: "Insulin_CAT"
+      categories: ["Normal", "Prediabetes", "Diabetes"]
+    - name: "BMI_CAT"
+      categories: ["Underweight", "Healthy", "Overweight", "Obese_Class1", "Obese_Class2", "Obese_Class3"]
+    - name: "Age_CAT"
+      categories: ["Adult", "Middle_Age_Adult", "Senior_Adult"]
+    - name: "Life_Level_CAT"
+      categories: ["Not_Risk", "At_Risk"]

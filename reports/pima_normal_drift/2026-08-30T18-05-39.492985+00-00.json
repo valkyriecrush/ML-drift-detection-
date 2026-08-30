@@ -1,0 +1,489 @@
+{
+  "model_id": "pima_normal_drift",
+  "cycle_timestamp": "2026-08-30T18:05:39.485989+00:00",
+  "generated_at": "2026-08-30T18:05:39.492985+00:00",
+  "overall_status": "critical",
+  "executive_summary": "Data drift: 2/8 feature(s) drifted (severity critical). Target drift (confirmed): PSI=0.000, severity none. Performance: severity critical, cause = model_weights. Alerts: 3 critical, 1 warning. 3 remediation action(s) pending human approval.",
+  "data_drift": {
+    "overall_severity": "critical",
+    "total_features": 8,
+    "drifted_features": 2,
+    "drift_percentage": 25.0,
+    "features": [
+      {
+        "feature": "Pregnancies",
+        "type": "numeric",
+        "psi_score": 0.0004690641342678369,
+        "norm_wasserstein_distance": 0.00515061936936928,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Glucose",
+        "type": "numeric",
+        "psi_score": 0.10221126392984858,
+        "norm_wasserstein_distance": 0.22530849239029702,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "BloodPressure",
+        "type": "numeric",
+        "psi_score": 0.0002579511273689436,
+        "norm_wasserstein_distance": 0.009497730152027062,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "SkinThickness",
+        "type": "numeric",
+        "psi_score": 0.0003015561692410547,
+        "norm_wasserstein_distance": 0.008034708815958505,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Insulin",
+        "type": "numeric",
+        "psi_score": 0.00040394878145444673,
+        "norm_wasserstein_distance": 0.027599439458114893,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "BMI",
+        "type": "numeric",
+        "psi_score": 0.11819319066631481,
+        "norm_wasserstein_distance": 0.240637017933948,
+        "severity": "critical",
+        "is_drifted": true,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "DiabetesPedigreeFunction",
+        "type": "numeric",
+        "psi_score": 0.00043503751030586987,
+        "norm_wasserstein_distance": 0.009672963404581103,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Age",
+        "type": "numeric",
+        "psi_score": 0.0005371355572488607,
+        "norm_wasserstein_distance": 0.002494452172760968,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      }
+    ],
+    "timestamp": "2026-08-30T18:05:39.473980+00:00"
+  },
+  "target_drift": {
+    "status": "confirmed",
+    "n_samples": 740,
+    "timestamp": "2026-08-30T18:05:39.485989+00:00",
+    "drift": {
+      "psi_score": 0.0,
+      "severity": "none",
+      "is_drifted": false,
+      "norm_wasserstein_distance": 0.0267,
+      "details": {
+        "reference_mean": 0.3489583333333333,
+        "reference_std": 0.47664076087820645,
+        "current_mean": 0.37567567567567567,
+        "current_std": 0.48429687422210377,
+        "missing_rate": 0.0,
+        "n_missing": 0,
+        "n_total": 740,
+        "new_categories": []
+      }
+    }
+  },
+  "performance_drift": {
+    "status": "labeled",
+    "severity": "critical",
+    "remediation_type": "model_weights",
+    "window_size": 500,
+    "proba_coverage": 1.0,
+    "metrics": [
+      {
+        "name": "accuracy",
+        "baseline": 0.9349,
+        "current": 0.906,
+        "delta": -0.0289,
+        "std_score": -3.091,
+        "degraded": true
+      },
+      {
+        "name": "precision",
+        "baseline": 0.929,
+        "current": 0.718,
+        "delta": -0.211,
+        "std_score": -21.214,
+        "degraded": true
+      },
+      {
+        "name": "recall",
+        "baseline": 0.9275,
+        "current": 0.9129,
+        "delta": -0.0146,
+        "std_score": -1.509,
+        "degraded": false
+      },
+      {
+        "name": "f1",
+        "baseline": 0.9282,
+        "current": 0.7725,
+        "delta": -0.1557,
+        "std_score": -16.774,
+        "degraded": true
+      },
+      {
+        "name": "recall_class_1",
+        "baseline": 0.903,
+        "current": 0.9211,
+        "delta": 0.0181,
+        "std_score": 1.409,
+        "degraded": false
+      },
+      {
+        "name": "auc_roc",
+        "baseline": 0.9829,
+        "current": 0.9469,
+        "delta": -0.0361,
+        "std_score": -3.668,
+        "degraded": true
+      },
+      {
+        "name": "auc_pr",
+        "baseline": 0.9701,
+        "current": 0.6857,
+        "delta": -0.2844,
+        "std_score": -29.32,
+        "degraded": true
+      }
+    ],
+    "calibration_metrics": [
+      {
+        "name": "log_loss",
+        "baseline": 0.1954,
+        "current": 0.2695,
+        "delta": 0.0741,
+        "std_score": 7.075,
+        "degraded": true
+      },
+      {
+        "name": "brier_score",
+        "baseline": 0.1041,
+        "current": 0.1527,
+        "delta": 0.0487,
+        "std_score": 7.459,
+        "degraded": true
+      },
+      {
+        "name": "ece",
+        "baseline": 0.0591,
+        "current": 0.0405,
+        "delta": -0.0187,
+        "std_score": -3.397,
+        "degraded": false
+      }
+    ],
+    "notes": [],
+    "timestamp": "2026-08-30T18:05:39.476987+00:00"
+  },
+  "root_cause": {
+    "title": "Probable root cause identified for the performance degradation",
+    "message": "Performance degradation (model_weights) coincides with confirmed drift on Glucose, feature(s) with direct SHAP impact: likely causal link.",
+    "recommended_action": "Prioritize fixing (data or pipeline) Glucose before any blind retrain -- retraining without fixing the cause would reproduce the same problem next cycle."
+  },
+  "alerts": [
+    {
+      "source_agent": "data_drift",
+      "priority": "critical",
+      "title": "High model-impact drift on 1 feature(s)",
+      "message": "Affected features: Glucose.\n- Glucose: 'Glucose' is at the 88th percentile of SHAP importance among tracked features (threshold=75th, raw importance=0.5135): the drift directly affects predictions.",
+      "context": {
+        "drift_percentage": 25.0,
+        "features": [
+          "Glucose"
+        ],
+        "psi_scores": {
+          "Glucose": 0.10221126392984858
+        },
+        "shap_adjusted": true
+      },
+      "recommended_action": "FINAL VERDICT -- retrain: batch is clean (no missing-value spike, no new category) on the drifted feature(s), so this is a genuine population shift, not a data-quality artifact. Prioritize Glucose (direct model impact per SHAP). Check for a root_cause alert this cycle before scheduling the retrain.",
+      "remediation_type": "retrain",
+      "timestamp": "2026-08-30T18:05:39.490076+00:00"
+    },
+    {
+      "source_agent": "data_drift",
+      "priority": "warning",
+      "title": "Drift to monitor on 1 feature(s)",
+      "message": "Affected features: BMI.\n- BMI: 'BMI' has low SHAP importance (percentile 50) and isn't correlated with an influential feature: likely negligible model impact despite the statistical drift.",
+      "context": {
+        "drift_percentage": 25.0,
+        "features": [
+          "BMI"
+        ],
+        "psi_scores": {
+          "BMI": 0.11819319066631481
+        },
+        "shap_adjusted": true
+      },
+      "recommended_action": "No immediate action: risk is indirect (correlated with a key feature) or undetermined (missing SHAP/correlation data). Re-evaluate next cycle.",
+      "remediation_type": "monitor",
+      "timestamp": "2026-08-30T18:05:39.490076+00:00"
+    },
+    {
+      "source_agent": "performance_drift",
+      "priority": "critical",
+      "title": "Real model performance degradation",
+      "message": "Degraded metrics this window: accuracy, precision, f1, auc_roc, auc_pr.",
+      "context": {
+        "window_size": 500,
+        "metrics": [
+          {
+            "name": "accuracy",
+            "baseline": 0.9348958333333334,
+            "current": 0.906,
+            "delta": -0.028895833333333343,
+            "std_score": -3.0908077994428975,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "precision",
+            "baseline": 0.9289908037024833,
+            "current": 0.7179560419736011,
+            "delta": -0.21103476172888225,
+            "std_score": -21.21425992804147,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "f1",
+            "baseline": 0.9282334207988517,
+            "current": 0.7725314826107579,
+            "delta": -0.15570193818809386,
+            "std_score": -16.77400691456406,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "auc_roc",
+            "baseline": 0.9829104477611941,
+            "current": 0.9468557758031443,
+            "delta": -0.03605467195804979,
+            "std_score": -3.6681543105145176,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "auc_pr",
+            "baseline": 0.9700968765291148,
+            "current": 0.6856598483689607,
+            "delta": -0.28443702816015415,
+            "std_score": -29.320476649490328,
+            "degraded": true,
+            "contributes_to_severity": true
+          }
+        ]
+      },
+      "recommended_action": "Retrain recommended. Check first whether a root_cause alert was raised this cycle: if so, fix that feature/pipeline before retraining, or the same issue will recur.",
+      "remediation_type": "retrain",
+      "timestamp": "2026-08-30T18:05:39.490076+00:00"
+    },
+    {
+      "source_agent": "root_cause",
+      "priority": "critical",
+      "title": "Probable root cause identified for the performance degradation",
+      "message": "Performance degradation (model_weights) coincides with confirmed drift on Glucose, feature(s) with direct SHAP impact: likely causal link.",
+      "context": {
+        "suspected_features": [
+          "Glucose"
+        ]
+      },
+      "recommended_action": "Prioritize fixing (data or pipeline) Glucose before any blind retrain -- retraining without fixing the cause would reproduce the same problem next cycle.",
+      "remediation_type": "retrain",
+      "timestamp": "2026-08-30T18:05:39.490076+00:00"
+    }
+  ],
+  "remediation_actions": [
+    {
+      "source_alert_title": "High model-impact drift on 1 feature(s)",
+      "source_agent": "data_drift",
+      "priority": "critical",
+      "action_type": "retrain",
+      "description": "FINAL VERDICT -- retrain: batch is clean (no missing-value spike, no new category) on the drifted feature(s), so this is a genuine population shift, not a data-quality artifact. Prioritize Glucose (direct model impact per SHAP). Check for a root_cause alert this cycle before scheduling the retrain.",
+      "automatable": true,
+      "requires_approval": true,
+      "urgency": "urgent",
+      "sla": "within 24h",
+      "is_primary": false,
+      "superseded_by": "Probable root cause identified for the performance degradation",
+      "payload": {
+        "source_agent": "data_drift",
+        "priority": "critical",
+        "drift_percentage": 25.0,
+        "features": [
+          "Glucose"
+        ],
+        "psi_scores": {
+          "Glucose": 0.10221126392984858
+        },
+        "shap_adjusted": true
+      },
+      "status": "skipped",
+      "timestamp": "2026-08-30T18:05:39.491049+00:00"
+    },
+    {
+      "source_alert_title": "Drift to monitor on 1 feature(s)",
+      "source_agent": "data_drift",
+      "priority": "warning",
+      "action_type": "monitor",
+      "description": "No immediate action: risk is indirect (correlated with a key feature) or undetermined (missing SHAP/correlation data). Re-evaluate next cycle.",
+      "automatable": true,
+      "requires_approval": false,
+      "urgency": "normal",
+      "sla": "next working cycle",
+      "is_primary": true,
+      "superseded_by": null,
+      "payload": {
+        "source_agent": "data_drift",
+        "priority": "warning",
+        "drift_percentage": 25.0,
+        "features": [
+          "BMI"
+        ],
+        "psi_scores": {
+          "BMI": 0.11819319066631481
+        },
+        "shap_adjusted": true
+      },
+      "status": "executed",
+      "timestamp": "2026-08-30T18:05:39.491049+00:00"
+    },
+    {
+      "source_alert_title": "Real model performance degradation",
+      "source_agent": "performance_drift",
+      "priority": "critical",
+      "action_type": "retrain",
+      "description": "Retrain recommended. Check first whether a root_cause alert was raised this cycle: if so, fix that feature/pipeline before retraining, or the same issue will recur.",
+      "automatable": true,
+      "requires_approval": true,
+      "urgency": "urgent",
+      "sla": "within 24h",
+      "is_primary": false,
+      "superseded_by": "Probable root cause identified for the performance degradation",
+      "payload": {
+        "source_agent": "performance_drift",
+        "priority": "critical",
+        "window_size": 500,
+        "metrics": [
+          {
+            "name": "accuracy",
+            "baseline": 0.9348958333333334,
+            "current": 0.906,
+            "delta": -0.028895833333333343,
+            "std_score": -3.0908077994428975,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "precision",
+            "baseline": 0.9289908037024833,
+            "current": 0.7179560419736011,
+            "delta": -0.21103476172888225,
+            "std_score": -21.21425992804147,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "f1",
+            "baseline": 0.9282334207988517,
+            "current": 0.7725314826107579,
+            "delta": -0.15570193818809386,
+            "std_score": -16.77400691456406,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "auc_roc",
+            "baseline": 0.9829104477611941,
+            "current": 0.9468557758031443,
+            "delta": -0.03605467195804979,
+            "std_score": -3.6681543105145176,
+            "degraded": true,
+            "contributes_to_severity": true
+          },
+          {
+            "name": "auc_pr",
+            "baseline": 0.9700968765291148,
+            "current": 0.6856598483689607,
+            "delta": -0.28443702816015415,
+            "std_score": -29.320476649490328,
+            "degraded": true,
+            "contributes_to_severity": true
+          }
+        ]
+      },
+      "status": "skipped",
+      "timestamp": "2026-08-30T18:05:39.491049+00:00"
+    },
+    {
+      "source_alert_title": "Probable root cause identified for the performance degradation",
+      "source_agent": "root_cause",
+      "priority": "critical",
+      "action_type": "retrain",
+      "description": "Prioritize fixing (data or pipeline) Glucose before any blind retrain -- retraining without fixing the cause would reproduce the same problem next cycle.",
+      "automatable": true,
+      "requires_approval": true,
+      "urgency": "urgent",
+      "sla": "within 24h",
+      "is_primary": true,
+      "superseded_by": null,
+      "payload": {
+        "source_agent": "root_cause",
+        "priority": "critical",
+        "suspected_features": [
+          "Glucose"
+        ]
+      },
+      "status": "pending",
+      "timestamp": "2026-08-30T18:05:39.491049+00:00"
+    }
+  ]
+}

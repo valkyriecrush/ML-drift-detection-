@@ -1,0 +1,229 @@
+# =============================================================================
+# baseline_config.yml
+# "Database" config for BaselineCalculator / DriftSimulator
+# Reference repo: https://github.com/valkyriecrush/agentic
+# =============================================================================
+
+baseline:
+  # Paths to artifacts already trained / computed in the repo.
+  # We recompute NOTHING: we load the existing CSV/pkl files as-is.
+  source_data_path: "data/diabetes.csv"
+  x_test_path: "data/X_test.csv"
+  y_test_path: "data/y_test.csv"
+  model_path: "models/lgbm_model.pkl"
+
+  # Where to persist baseline stats computed only once (disk cache), so
+  # they're never recomputed between two simulator runs.
+  cache_dir: "baseline/.cache"
+  # v2: deliberate bump following the application of
+  # src.preprocessing.zeros_to_missing BEFORE baseline stats are computed
+  # (see baseline_calculator.py) -> v1 stats (computed on raw, uncleaned
+  # zeros) must never be silently reloaded after this change.
+  cache_file: "baseline_stats_v2.json"
+  hash_algorithm: "sha256"
+
+  # PSI bin grid fixed at baseline generation time (immutable afterward).
+  psi:
+    n_bins: 10
+    binning_strategy: "quantile"     # bins based on the baseline's quantiles
+    laplace_epsilon: 1.0e-4
+    critical_threshold: 0.25
+
+  # Features tracked for PSI / drift (Pima Indians Diabetes Database).
+  tracked_features:
+    - Pregnancies
+    - Glucose
+    - BloodPressure
+    - SkinThickness
+    - Insulin
+    - BMI
+    - DiabetesPedigreeFunction
+    - Age
+
+  target_col: "Outcome"
+
+# -----------------------------------------------------------------------------
+# "Documentary" reference files (produced by the agentic repo, describe the
+# data/model without ever being executed/recomputed). Used to validate the
+# pipeline (schema_validator.py) and to fix the column order expected by
+# the model without depending on model.feature_name_ at runtime.
+# -----------------------------------------------------------------------------
+reference_files:
+  # Per-column schema constraints on raw data (min/max, zero_is_missing,
+  # official baseline stats from the repo) -> used by
+  # baseline/schema_validator.py.
+  schema_path: "config/diabetes_schema.yaml"
+  # Descriptive stats of the dataset after cleaning (data/diabetes_cleaned.csv).
+  cleaned_reference_path: "config/diabetes_cleaned.yaml"
+  # Description of the fully feature-engineered dataset (data/diabetes_features.csv).
+  features_reference_path: "config/diabetes_features.yaml"
+  # Schema of X_test / y_test as produced by notebooks/04_modeling.ipynb.
+  x_test_schema_path: "config/X_test.yaml"
+  y_test_schema_path: "config/Y_test.yaml"
+  # Metadata of the trained model(s) (voting_clf.pkl + lgbm_model.pkl) —
+  # notably used to fix the column order expected out of data_prep
+  # (booster_info.feature_names from the LightGBM block), without depending
+  # at runtime on the model.feature_name_ attribute (which may be absent
+  # depending on the loaded model, e.g. VotingClassifier).
+  performance_path: "config/performance.yaml"
+
+preprocessing:
+  # Scaling mode for _run_pipeline (fragility #2 fixed: data leakage via a
+  # RobustScaler re-estimated on every drifted batch).
+  #   - "persistent_baseline_fit" (RECOMMENDED, default): the RobustScaler is
+  #     fit ONLY ONCE on baseline_df, then only transform() is applied on
+  #     every drifted checkpoint -> a pure scale drift stays visible in the
+  #     post-pipeline metrics instead of being absorbed by a refit.
+  #   - "refit_per_batch": exactly replicates the repo's
+  #     src.feature_engineering.data_prep behavior
+  #     (RobustScaler().fit_transform() on every call) -> kept only for
+  #     fidelity comparison with the original repo, NOT recommended for a
+  #     drift stress-test.
+  scaler_mode: "persistent_baseline_fit"
+
+random_state:
+  base_seed: 42
+  # Each step uses np.random.RandomState(base_seed + step_id) -> never a
+  # global np.random.seed.
+  step_ids:
+    feature_step_glucose: 1
+    feature_step_bmi: 2
+    feature_variance_shift_bp: 3
+    gradual_drift_insulin: 4
+    concept_drift_threshold: 5
+    concept_drift_label_noise: 6
+    target_drift_resampling: 7
+    inject_outliers: 8
+    inject_missing_values: 9
+
+severity_presets:
+  severe:
+    feature_step:
+      Glucose: { delta: 80, mask_ratio: 0.7 }
+      BMI: { delta: 15, mask_ratio: 0.6 }
+    feature_variance_shift:
+      BloodPressure: { factor: 2.5 }
+    gradual_drift:
+      Insulin: { total_delta: 150, n_batches: 10 }
+    concept_drift:
+      rule_threshold_original: 126
+      rule_threshold_drifted: 180
+      label_noise_flip_ratio: 0.15
+    target_drift:
+      new_prevalence: 0.65
+      resampling_method: "oversample_duplicate"
+    data_quality:
+      outliers: { feature: SkinThickness, value: 999.0, pct: 0.05 }
+      missing: { feature: Insulin, pct: 0.30 }
+  extreme:
+    feature_step:
+      Glucose: { delta: 120, mask_ratio: 0.95 }
+      BMI: { delta: 25, mask_ratio: 0.9 }
+    feature_variance_shift:
+      BloodPressure: { factor: 4.0 }
+    gradual_drift:
+      Insulin: { total_delta: 150, n_batches: 10 }
+    concept_drift:
+      rule_threshold_original: 126
+      rule_threshold_drifted: 180
+      label_noise_flip_ratio: 0.35
+    target_drift:
+      new_prevalence: 0.85
+      resampling_method: "oversample_duplicate"
+    data_quality:
+      outliers: { feature: SkinThickness, value: 999.0, pct: 0.15 }
+      missing: { feature: Insulin, pct: 0.60 }
+
+# =============================================================================
+# "No Drift" scenario (drift/no_drift/no_drift_simulator.py)
+# Negative control: baseline_df strictly unchanged -> target status OK.
+# Section added so that no_drift_simulator reads its thresholds/output path
+# HERE (single source of truth), instead of falling back to _DEFAULT_*
+# constants hardcoded in the Python file.
+# -----------------------------------------------------------------------------
+no_drift:
+  drift_status_thresholds:
+    # Same thresholds as normal_drift.drift_status_thresholds (cross-scenario
+    # consistency), duplicated here explicitly so the no_drift section stays
+    # self-contained and doesn't depend on normal_drift.
+    warning_low: 0.10
+    critical_high: 0.25
+  output:
+    report_path: "no_drift_results.json"
+
+# =============================================================================
+# "Severe Drift" scenario (drift/severe_drift/severe_drift_simulator.py)
+# JSON export path, aligned with the same pattern as no_drift/normal_drift
+# (single source of truth in the yml, not a hardcoded path passed to main).
+# `{severity}` is substituted with "severe" or "extreme" depending on the call.
+# -----------------------------------------------------------------------------
+severe_drift:
+  output:
+    report_path_template: "severe_drift_{severity}_results.json"
+
+sla_check:
+  psi_post_feature_drift_glucose_min: 0.25
+  prediction_change_rate_min: 0.40
+  f1_degradation_min: 0.15
+
+label_noise_realism_threshold: 0.20   # > 0.20 -> "technical_stress_test"
+outlier_iqr_multiplier_post_pipeline: 1.4   # as specified (note: deliberately < the classic 1.5)
+
+# =============================================================================
+# "Normal Drift" scenario (drift/normal_drift/normal_drift_simulator.py)
+# Moderate drift, realistic in production -> target status WARNING
+# (0.10 <= PSI < 0.25), not CRITICAL. Unlike `severity_presets` (fixed
+# absolute deltas), feature shifts are expressed here as multiples of the
+# baseline standard deviation (std_multiplier) -> the actual delta is
+# recomputed dynamically by NormalDriftSimulator via
+# BaselineCalculator.get_stats().
+# -----------------------------------------------------------------------------
+normal_drift:
+  features:
+    # Recalibrated (was std_multiplier: 0.8 / mask_ratio: 0.8). Replayed with
+    # the exact code from baseline/baseline_calculator.py +
+    # drift/base_drift_simulator.py + drift/normal_drift/normal_drift_simulator.py
+    # (feature_step = Bernoulli mask rng.random_sample(n)<mask_ratio;
+    # target_drift.undersample caps n_pos_target at len(pos), so the actual
+    # effect of resampling on Glucose/BMI is smaller than a naive
+    # calculation would suggest):
+    #   - old (0.8/0.8)      : final PSI (max Glucose/BMI) = 0.464 -> CRITICAL,
+    #     confirms the observed log.
+    #   - 0.5/0.5 (1st try)  : final PSI = 0.080 -> WARNING but only
+    #     ~1.6x above the warning_low=0.05 floor, a somewhat tight margin.
+    #   - 0.6/0.5 (kept)     : final PSI = 0.118 -> well centered in the
+    #     WARNING band [0.05, 0.25) (~2.4x above the floor, ~2.1x below the
+    #     critical_threshold=0.25 ceiling), more robust to small environment
+    #     variations (numpy/pandas versions). Other tracked_features
+    #     nearly unchanged (<= 0.001).
+    Glucose: { std_multiplier: 0.6, mask_ratio: 0.5 }
+    BMI: { std_multiplier: 0.6, mask_ratio: 0.5 }
+  concept_drift:
+    # Label noise r ~= 3-5%: low/high bound, effective value = the middle
+    # of the interval unless `label_noise_flip_ratio` is passed explicitly
+    # to NormalDriftSimulator.run().
+    label_noise_flip_ratio_min: 0.03
+    label_noise_flip_ratio_max: 0.05
+  target_drift:
+    # Prevalence shift in absolute points (e.g. 0.35 -> 0.40 if "up").
+    prevalence_delta: 0.05
+    direction: "up"   # "up" | "down"
+    # "undersample" by default (no duplication -> no
+    # resampling_contamination_warning), unlike the "severe" preset which
+    # deliberately uses "oversample_duplicate".
+    resampling_method: "undersample"
+  drift_status_thresholds:
+    # Aligned with psi.critical_threshold above: same CRITICAL threshold
+    # across the whole project, only the WARNING threshold is scenario-specific.
+    warning_low: 0.05
+    critical_high: 0.25
+  output:
+    report_path: "normal_drift_results.json"
+  step_ids:
+    # Dedicated seed space (101+), isolated from severity_presets.step_ids
+    # (1-9) to never accidentally replay the same random sequence as a
+    # severe scenario.
+    feature_step_glucose: 101
+    feature_step_bmi: 102
+    concept_drift_label_noise: 106
+    target_drift_resampling: 107

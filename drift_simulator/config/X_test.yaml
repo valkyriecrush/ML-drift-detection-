@@ -1,0 +1,42 @@
+version: "3.0"
+dataset_name: "X_test"
+file_path: "data/X_test.csv"
+shape:
+  rows: 154
+  columns: 23
+
+features:
+  scaled_numeric:
+    - name: "Pregnancies"
+      type: "float64"
+    - name: "Glucose"
+      type: "float64"
+    - name: "BloodPressure"
+      type: "float64"
+    - name: "SkinThickness"
+      type: "float64"
+    - name: "Insulin"
+      type: "float64"
+    - name: "BMI"
+      type: "float64"
+    - name: "DiabetesPedigreeFunction"
+      type: "float64"
+    - name: "Age"
+      type: "float64"
+
+  encoded_categorical:
+    - "Glucose_CAT"
+    - "Life_Level_CAT"
+    - "Insulin_CAT_Prediabetes"
+    - "Insulin_CAT_Diabetes"
+    - "BloodPressure_CAT_Normal"
+    - "BloodPressure_CAT_Prehypertension"
+    - "BloodPressure_CAT_Hypertension"
+    - "BloodPressure_CAT_Hypertensive_Crisis"
+    - "BMI_CAT_Healthy"
+    - "BMI_CAT_Overweight"
+    - "BMI_CAT_Obese_Class1"
+    - "BMI_CAT_Obese_Class2"
+    - "BMI_CAT_Obese_Class3"
+    - "Age_CAT_Middle_Age_Adult"
+    - "Age_CAT_Senior_Adult"

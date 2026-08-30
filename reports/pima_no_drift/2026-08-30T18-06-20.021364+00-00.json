@@ -1,0 +1,137 @@
+{
+  "model_id": "pima_no_drift",
+  "cycle_timestamp": "2026-08-30T18:06:20.013361+00:00",
+  "generated_at": "2026-08-30T18:06:20.021364+00:00",
+  "overall_status": "healthy",
+  "executive_summary": "Data drift: 0/8 feature(s) drifted (severity none). Target drift (proxy): PSI=0.000, severity none. No alerts raised this cycle.",
+  "data_drift": {
+    "overall_severity": "none",
+    "total_features": 8,
+    "drifted_features": 0,
+    "drift_percentage": 0.0,
+    "features": [
+      {
+        "feature": "Pregnancies",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Glucose",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "BloodPressure",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "SkinThickness",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Insulin",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "BMI",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "DiabetesPedigreeFunction",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      },
+      {
+        "feature": "Age",
+        "type": "numeric",
+        "psi_score": 0.0,
+        "norm_wasserstein_distance": 0.0,
+        "severity": "none",
+        "is_drifted": false,
+        "risk_level": null,
+        "rationale": null,
+        "missing_rate": 0.0,
+        "new_categories": []
+      }
+    ],
+    "timestamp": "2026-08-30T18:06:20.012360+00:00"
+  },
+  "target_drift": {
+    "status": "proxy",
+    "n_samples": 768,
+    "timestamp": "2026-08-30T18:06:20.013361+00:00",
+    "drift": {
+      "psi_score": 0.0,
+      "severity": "none",
+      "is_drifted": false,
+      "norm_wasserstein_distance": 0.0026,
+      "details": {
+        "reference_mean": 0.3489583333333333,
+        "reference_std": 0.47664076087820645,
+        "current_mean": 0.3463541666666667,
+        "current_std": 0.4758076900380085,
+        "missing_rate": 0.0,
+        "n_missing": 0,
+        "n_total": 768,
+        "new_categories": []
+      }
+    }
+  },
+  "performance_drift": null,
+  "root_cause": null,
+  "alerts": [],
+  "remediation_actions": []
+}

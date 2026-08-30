@@ -1,0 +1,47 @@
+{
+  "severity": "none",
+  "scenario_type": null,
+  "baseline_reference": {
+    "path": "data/diabetes.csv",
+    "hash": "d5ef471a76861ff03ba51cb45f0f0e91cd78c5e4cd490bad40c1181b8c24fc90",
+    "computed_at": "2026-08-20T10:18:29.580004+00:00"
+  },
+  "schema_warnings": [
+    "Glucose: 5 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "BloodPressure: 35 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "SkinThickness: 227 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "Insulin: 374 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "BMI: 11 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)"
+  ],
+  "psi_checkpoints": {
+    "psi_final": {
+      "Pregnancies": 0.0,
+      "Glucose": 0.0,
+      "BloodPressure": 0.0,
+      "SkinThickness": 0.0,
+      "Insulin": 0.0,
+      "BMI": 0.0,
+      "DiabetesPedigreeFunction": 0.0,
+      "Age": 0.0
+    }
+  },
+  "overall_drift_status": {
+    "status": "OK",
+    "psi_reference": 0.0,
+    "reference_feature": "Pregnancies",
+    "threshold_warning_low": 0.1,
+    "threshold_critical_high": 0.25,
+    "message": "Highest PSI in the checkpoint = 0.0000 (feature 'Pregnancies'), WARNING threshold >= 0.1, CRITICAL threshold >= 0.25 -> status OK."
+  },
+  "target_status_check": {
+    "expected_status": "OK",
+    "actual_status": "OK",
+    "matches_expectation": true
+  },
+  "prediction_change_rate": 0.0,
+  "f1_degradation": 0.0,
+  "flags": {
+    "f1_model_degradation": 0.0
+  },
+  "generated_at": "2026-08-20T11:03:18.364923+00:00"
+}

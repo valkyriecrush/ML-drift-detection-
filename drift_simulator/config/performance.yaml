@@ -1,0 +1,77 @@
+voting_classifier:
+  sklearn_version: "1.9.0"
+  voting: "hard"
+  estimators:
+    - name: "KNN"
+      type: "sklearn.neighbors.KNeighborsClassifier"
+      parameters:
+        n_neighbors: 5
+        weights: "uniform"
+        algorithm: "auto"
+        leaf_size: 30
+        p: 2
+        metric: "minkowski"
+        metric_params: null
+        n_jobs: null
+
+    - name: "RF"
+      type: "sklearn.ensemble.RandomForestClassifier"
+      parameters:
+        n_estimators: 100
+        criterion: "gini"
+        max_depth: null
+        min_samples_split: 2
+        min_samples_leaf: 1
+        min_weight_fraction_leaf: 0.0
+        max_features: null
+        max_leaf_nodes: null
+        min_impurity_decrease: 0.0
+        bootstrap: true
+        oob_score: false
+        random_state: null
+        verbose: 0
+        warm_start: false
+
+    - name: "LightGBM"
+      type: "lightgbm.sklearn.LGBMClassifier"
+      parameters:
+        boosting_type: "gbdt"
+        objective: null
+        num_leaves: 31
+        learning_rate: 0.01
+        n_estimators: 100
+        min_child_samples: 20
+        subsample: 1.0
+        colsample_bytree: 1.0
+        importance_type: "split"
+      booster_info:
+        version: "v4"
+        num_class: 1
+        num_tree_per_iteration: 1
+        label_index: 0
+        max_feature_idx: 22
+        objective: "binary sigmoid:1"
+        feature_names:
+          - Pregnancies
+          - Glucose
+          - BloodPressure
+          - SkinThickness
+          - Insulin
+          - BMI
+          - DiabetesPedigreeFunction
+          - Age
+          - Glucose_CAT
+          - Life_Level_CAT
+          - Insulin_CAT_Prediabetes
+          - Insulin_CAT_Diabetes
+          - BloodPressure_CAT_Normal
+          - BloodPressure_CAT_Prehypertension
+          - BloodPressure_CAT_Hypertension
+          - BloodPressure_CAT_Hypertensive_Crisis
+          - BMI_CAT_Healthy
+          - BMI_CAT_Overweight
+          - BMI_CAT_Obese_Class1
+          - BMI_CAT_Obese_Class2
+          - BMI_CAT_Obese_Class3
+          - Age_CAT_Middle_Age_Adult
+          - Age_CAT_Senior_Adult

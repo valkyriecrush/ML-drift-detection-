@@ -1,0 +1,73 @@
+{
+  "severity": "severe",
+  "scenario_type": "clinical_realistic",
+  "composite_drift": true,
+  "resampling_contamination_warning": true,
+  "baseline_reference": {
+    "path": "data/diabetes.csv",
+    "hash": "d5ef471a76861ff03ba51cb45f0f0e91cd78c5e4cd490bad40c1181b8c24fc90",
+    "computed_at": "2026-08-20T10:18:29.580004+00:00"
+  },
+  "schema_warnings": [
+    "Glucose: 5 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "BloodPressure: 35 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "SkinThickness: 227 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "Insulin: 374 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "BMI: 11 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)"
+  ],
+  "psi_checkpoints": {
+    "psi_post_feature_drift": {
+      "Pregnancies": 0.0,
+      "Glucose": 1.6923868061405838,
+      "BloodPressure": 2.17019515325213,
+      "SkinThickness": 0.0,
+      "Insulin": 6.742275111212566,
+      "BMI": 1.013312450510798,
+      "DiabetesPedigreeFunction": 0.0,
+      "Age": 0.0
+    },
+    "psi_post_target_drift": {
+      "Pregnancies": 0.008991048719986915,
+      "Glucose": 2.048439562546888,
+      "BloodPressure": 2.196849302987014,
+      "SkinThickness": 0.010406163024873873,
+      "Insulin": 6.873348430160077,
+      "BMI": 1.0937882050822905,
+      "DiabetesPedigreeFunction": 0.007437845956473788,
+      "Age": 0.01222454586709723
+    },
+    "psi_post_data_quality": {
+      "Pregnancies": 0.008991048719986915,
+      "Glucose": 2.048439562546888,
+      "BloodPressure": 2.196849302987014,
+      "SkinThickness": 0.03383761116327851,
+      "Insulin": 6.880814758605437,
+      "BMI": 1.0937882050822905,
+      "DiabetesPedigreeFunction": 0.007437845956473788,
+      "Age": 0.01222454586709723
+    },
+    "psi_final": {
+      "Pregnancies": 0.008991048719986915,
+      "Glucose": 2.048439562546888,
+      "BloodPressure": 2.196849302987014,
+      "SkinThickness": 0.03383761116327851,
+      "Insulin": 6.880814758605437,
+      "BMI": 1.0937882050822905,
+      "DiabetesPedigreeFunction": 0.007437845956473788,
+      "Age": 0.01222454586709723
+    }
+  },
+  "prediction_change_rate": 0.5846354166666666,
+  "f1_degradation": 0.31605867115444897,
+  "flags": {
+    "composite_drift_note": "Rule threshold applied on 'Glucose' which was already shifted by the feature drift step -> degradation due to the threshold vs. the shift cannot be isolated without recomputing on an undrifted 'Glucose'.",
+    "resampling_method": "oversample_duplicate",
+    "f1_model_degradation": 0.31605867115444897,
+    "f1_test_set_corruption_delta": -0.22997632746484387
+  },
+  "sla_check": {
+    "meets_expected_severity": true,
+    "criteria_failed": []
+  },
+  "generated_at": "2026-08-20T11:03:18.701498+00:00"
+}

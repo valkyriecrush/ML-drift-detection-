@@ -1,0 +1,59 @@
+version: "3.0"
+dataset_name: "diabetes_cleaned"
+file_path: "data/diabetes_cleaned.csv"
+shape:
+  rows: 768
+  columns: 9
+
+target:
+  name: "Outcome"
+  type: "binary"
+  classes: [0, 1]
+  prevalence: 0.3490
+
+features:
+  numeric:
+    - name: "Pregnancies"
+      type: "float64"
+      min: 0.0
+      max: 17.0
+      mean: 3.85
+    - name: "Glucose"
+      type: "float64"
+      min: 44.0
+      max: 199.0
+      mean: 121.68
+    - name: "BloodPressure"
+      type: "float64"
+      min: 24.0
+      max: 122.0
+      mean: 72.39
+    - name: "SkinThickness"
+      type: "float64"
+      min: 7.0
+      max: 73.0
+      mean: 29.06
+    - name: "Insulin"
+      type: "float64"
+      min: 14.0
+      max: 424.5
+      mean: 138.84
+    - name: "BMI"
+      type: "float64"
+      min: 18.2
+      max: 67.1
+      mean: 32.43
+    - name: "DiabetesPedigreeFunction"
+      type: "float64"
+      min: 0.078
+      max: 1.949
+      mean: 0.470
+    - name: "Age"
+      type: "float64"
+      min: 21.0
+      max: 81.0
+      mean: 33.24
+
+data_quality:
+  missing_values: 0
+  zero_imputation_applied: true

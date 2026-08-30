@@ -1,0 +1,118 @@
+{
+  "scenario": "normal_drift",
+  "scenario_type": "clinical_realistic",
+  "baseline_reference": {
+    "path": "data/diabetes.csv",
+    "hash": "d5ef471a76861ff03ba51cb45f0f0e91cd78c5e4cd490bad40c1181b8c24fc90",
+    "computed_at": "2026-08-20T10:18:29.580004+00:00"
+  },
+  "schema_warnings": [
+    "Glucose: 5 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "BloodPressure: 35 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "SkinThickness: 227 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "Insulin: 374 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)",
+    "BMI: 11 valeur(s) à 0 alors que zero_is_missing=true dans le schéma (devraient être imputées par data_prep en amont)"
+  ],
+  "parameters": {
+    "feature_shift": {
+      "Glucose": {
+        "std_multiplier": 0.6,
+        "sigma": 30.464160589122198,
+        "delta": 18.27849635347332,
+        "mask_ratio": 0.5
+      },
+      "BMI": {
+        "std_multiplier": 0.6,
+        "sigma": 6.880497796823623,
+        "delta": 4.128298678094174,
+        "mask_ratio": 0.5
+      }
+    },
+    "label_noise_flip_ratio": 0.04,
+    "prevalence": {
+      "baseline": 0.3489583333333333,
+      "target": 0.3989583333333333,
+      "delta": 0.05,
+      "direction": "up",
+      "resampling_method": "undersample"
+    }
+  },
+  "psi_checkpoints": {
+    "psi_post_feature_drift": {
+      "Pregnancies": 0.0,
+      "Glucose": 0.09358837435032977,
+      "BloodPressure": 0.0,
+      "SkinThickness": 0.0,
+      "Insulin": 0.0,
+      "BMI": 0.11162373643848914,
+      "DiabetesPedigreeFunction": 0.0,
+      "Age": 0.0
+    },
+    "psi_post_target_drift": {
+      "Pregnancies": 0.0004687338222332635,
+      "Glucose": 0.10208533850839682,
+      "BloodPressure": 0.0002577082798774783,
+      "SkinThickness": 0.00030132377484406666,
+      "Insulin": 0.0004036312845420158,
+      "BMI": 0.11806934010531783,
+      "DiabetesPedigreeFunction": 0.00043460353147661135,
+      "Age": 0.0005365707086453815
+    },
+    "psi_final": {
+      "Pregnancies": 0.0004687338222332635,
+      "Glucose": 0.10208533850839682,
+      "BloodPressure": 0.0002577082798774783,
+      "SkinThickness": 0.00030132377484406666,
+      "Insulin": 0.0004036312845420158,
+      "BMI": 0.11806934010531783,
+      "DiabetesPedigreeFunction": 0.00043460353147661135,
+      "Age": 0.0005365707086453815
+    }
+  },
+  "drift_status_by_checkpoint": {
+    "psi_post_feature_drift": {
+      "status": "WARNING",
+      "psi_reference": 0.11162373643848914,
+      "reference_feature": "BMI",
+      "threshold_warning_low": 0.05,
+      "threshold_critical_high": 0.25,
+      "message": "Highest PSI in the checkpoint = 0.1116 (feature 'BMI'), WARNING threshold >= 0.05, CRITICAL threshold >= 0.25 -> status WARNING."
+    },
+    "psi_post_target_drift": {
+      "status": "WARNING",
+      "psi_reference": 0.11806934010531783,
+      "reference_feature": "BMI",
+      "threshold_warning_low": 0.05,
+      "threshold_critical_high": 0.25,
+      "message": "Highest PSI in the checkpoint = 0.1181 (feature 'BMI'), WARNING threshold >= 0.05, CRITICAL threshold >= 0.25 -> status WARNING."
+    },
+    "psi_final": {
+      "status": "WARNING",
+      "psi_reference": 0.11806934010531783,
+      "reference_feature": "BMI",
+      "threshold_warning_low": 0.05,
+      "threshold_critical_high": 0.25,
+      "message": "Highest PSI in the checkpoint = 0.1181 (feature 'BMI'), WARNING threshold >= 0.05, CRITICAL threshold >= 0.25 -> status WARNING."
+    }
+  },
+  "overall_drift_status": {
+    "status": "WARNING",
+    "psi_reference": 0.11806934010531783,
+    "reference_feature": "BMI",
+    "threshold_warning_low": 0.05,
+    "threshold_critical_high": 0.25,
+    "message": "Highest PSI in the checkpoint = 0.1181 (feature 'BMI'), WARNING threshold >= 0.05, CRITICAL threshold >= 0.25 -> status WARNING."
+  },
+  "target_status_check": {
+    "expected_status": "WARNING",
+    "actual_status": "WARNING",
+    "matches_expectation": true
+  },
+  "prediction_change_rate": 0.45675675675675675,
+  "f1_degradation": 0.0065491905609791345,
+  "flags": {
+    "resampling_method": "undersample",
+    "f1_model_degradation": 0.0065491905609791345
+  },
+  "generated_at": "2026-08-20T11:03:18.529168+00:00"
+}

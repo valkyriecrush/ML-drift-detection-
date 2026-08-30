@@ -1,0 +1,16 @@
+version: "3.0"
+dataset_name: "y_test"
+file_path: "data/y_test.csv"
+shape:
+  rows: 154
+  columns: 1
+
+target:
+  name: "Outcome"
+  type: "binary"
+  classes: [0, 1]
+  class_distribution:
+    0: 0.6494
+    1: 0.3506
+  total_positive_samples: 54
+  total_negative_samples: 100

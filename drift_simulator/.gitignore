@@ -1,0 +1,26 @@
+# Data & model artifacts
+data/*.csv
+models/*.pkl
+!data/.gitkeep
+!models/.gitkeep
+
+# Feature store: materialized offline table + fitted online-serving
+# artifacts are build products (regenerate with `python build_feature_store.py`),
+# not source.
+feature_store/offline_store/
+feature_store/artifacts/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

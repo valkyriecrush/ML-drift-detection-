@@ -1,0 +1,80 @@
+version: "3.0"
+dataset_name: "pima_indians_diabetes"
+description: "Reference dataset for diabetes prediction and MLOps monitoring"
+
+paths:
+  source_data_path: "data/diabetes.csv"
+  x_test_path: "data/X_test.csv"
+  y_test_path: "data/y_test.csv"
+  model_path: "models/lgbm_model.pkl"
+
+schema:
+  target:
+    name: "Outcome"
+    type: "binary"
+    baseline_prevalence: 0.3490
+    classes: [0, 1]
+
+  features:
+    numeric:
+      - name: "Pregnancies"
+        type: "integer"
+        min: 0
+        max: 17
+        allow_zero: true
+
+      - name: "Glucose"
+        type: "float"
+        min: 0.0
+        max: 199.0
+        zero_is_missing: true
+        baseline_stats: { mean: 120.89, std: 31.97, median: 117.0 }
+
+      - name: "BloodPressure"
+        type: "float"
+        min: 0.0
+        max: 122.0
+        zero_is_missing: true
+        baseline_stats: { mean: 69.11, std: 19.36, median: 72.0 }
+
+      - name: "SkinThickness"
+        type: "float"
+        min: 0.0
+        max: 99.0
+        zero_is_missing: true
+        baseline_stats: { mean: 20.54, std: 15.95, median: 23.0 }
+
+      - name: "Insulin"
+        type: "float"
+        min: 0.0
+        max: 846.0
+        zero_is_missing: true
+        baseline_stats: { mean: 79.80, std: 115.24, median: 30.5 }
+
+      - name: "BMI"
+        type: "float"
+        min: 0.0
+        max: 67.1
+        zero_is_missing: true
+        baseline_stats: { mean: 31.99, std: 7.88, median: 32.0 }
+
+      - name: "DiabetesPedigreeFunction"
+        type: "float"
+        min: 0.078
+        max: 2.42
+        allow_zero: false
+        baseline_stats: { mean: 0.472, std: 0.331, median: 0.3725 }
+
+      - name: "Age"
+        type: "integer"
+        min: 21
+        max: 81
+        allow_zero: false
+        baseline_stats: { mean: 33.24, std: 11.76, median: 29.0 }
+
+preprocessing_rules:
+  zero_as_missing_cols: ["Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI"]
+  default_imputation_strategy: "median"
+  outlier_clipping:
+    method: "iqr"
+    factor: 1.5

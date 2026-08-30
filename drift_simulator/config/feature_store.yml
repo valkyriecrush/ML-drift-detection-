@@ -1,0 +1,83 @@
+# =============================================================================
+# feature_store.yml
+# Single source of truth for the feature_store/ package: which features
+# exist, grouped how, computed from what, and where offline/online
+# artifacts are persisted. Same design pattern as config/baseline_config.yml
+# (plain YAML, no hidden defaults in Python).
+# =============================================================================
+
+feature_store:
+  entity_key: "PatientID"
+
+  source:
+    raw_data_path: "data/diabetes.csv"
+    target_col: "Outcome"
+
+  # Where materialize() persists the offline feature table (versioned by a
+  # sha256 hash of the source file, same cache-invalidation pattern as
+  # baseline/baseline_calculator.py).
+  offline_store:
+    cache_dir: "feature_store/offline_store"
+    features_file: "features_v1.csv"
+    manifest_file: "manifest_v1.json"
+
+  # Where materialize() persists the FITTED, stateful artifacts (RobustScaler,
+  # outlier thresholds, imputation medians) needed to compute online features
+  # for a single new record consistently with how training features were
+  # built. Never recomputed per-request -> this is what prevents the
+  # train/serve skew that src/feature_engineering.data_prep is exposed to
+  # today (it calls RobustScaler().fit_transform() on every call; see
+  # config/baseline_config.yml -> preprocessing.scaler_mode for the same
+  # concern already documented for the drift simulator).
+  artifacts:
+    dir: "feature_store/artifacts"
+    file: "transformers_v1.pkl"
+
+  # Fixed output column set/order for get_online_features() and for scaling
+  # feature groups. Reuses the existing reference file (already the single
+  # source of truth for the model's expected input columns), instead of
+  # duplicating that list here.
+  model_feature_view: "config/performance.yaml"
+  schema_path: "config/diabetes_schema.yaml"
+
+  # ---------------------------------------------------------------------
+  # Feature groups
+  # ---------------------------------------------------------------------
+  feature_groups:
+    raw_measurements:
+      description: >
+        Direct clinical measurements from the Pima Indians Diabetes
+        Database, after biologically-impossible zeros are treated as
+        missing and outliers are capped (IQR method). Stored unscaled and
+        human-readable, as a feature store should: scaling is a
+        model-specific concern, applied downstream by get_online_features()
+        / get_scaled_historical_features(), not baked into the stored value.
+      online_safe: true
+      features:
+        - Pregnancies
+        - Glucose
+        - BloodPressure
+        - SkinThickness
+        - Insulin
+        - BMI
+        - DiabetesPedigreeFunction
+        - Age
+
+    clinical_risk_bands:
+      description: >
+        Domain-knowledge-driven categorical bands derived deterministically
+        from raw_measurements via clinical thresholds
+        (src.feature_engineering.feature_extraction). Purely a function of
+        the raw values -> safe to compute on-demand for a single online
+        record, no fitted state required beyond the raw thresholds
+        themselves (which are hardcoded clinical cutoffs, not learned from
+        data).
+      online_safe: true
+      depends_on: raw_measurements
+      features:
+        - Insulin_CAT
+        - Glucose_CAT
+        - BloodPressure_CAT
+        - BMI_CAT
+        - Age_CAT
+        - Life_Level_CAT
