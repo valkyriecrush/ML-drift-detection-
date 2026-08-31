@@ -1,26 +1,26 @@
-# Drift monitoring pour le modèle Pima Diabetes -- pipeline réelle + agents
+# Drift monitoring for the Pima Diabetes model -- real pipeline + agents
 
-Ce dépôt fait deux choses qui se branchent l'une sur l'autre :
+This repository does two things that plug into each other:
 
-1. **`drift_simulator/`** entraîne/sert un vrai modèle LightGBM sur le
-   Pima Indians Diabetes Dataset, et sait **simuler** trois scénarios de
-   dérive des données (aucune, modérée, sévère) sur ce vrai pipeline --
-   utile pour stress-tester le monitoring avant qu'un vrai incident arrive.
-2. **`agentic_drift_stress/`** est un système de **7 agents** (LangGraph)
-   qui surveille ce modèle en continu : détection de drift, corrélation
-   avec l'impact réel sur le modèle (SHAP), détection de dégradation de
-   performance, recherche de cause racine, alerting, décision de
-   remédiation, et rapport de diagnostic persisté (Markdown/JSON/PDF).
+1. **`drift_simulator/`** trains/serves a real LightGBM model on the
+   Pima Indians Diabetes Dataset, and can **simulate** three data drift
+   scenarios (none, moderate, severe) on this real pipeline -- useful
+   for stress-testing monitoring before a real incident happens.
+2. **`agentic_drift_stress/`** is a **7-agent** system (LangGraph)
+   that monitors this model continuously: drift detection, correlation
+   with the real impact on the model (SHAP), performance degradation
+   detection, root cause investigation, alerting, remediation
+   decision-making, and a persisted diagnostic report (Markdown/JSON/PDF).
 
-`bridge/` connecte les deux : il fait tourner les vrais simulateurs de
-`drift_simulator/` et transmet leurs résultats aux agents de
-`agentic_drift_stress/` comme s'ils observaient un modèle en production.
+`bridge/` connects the two: it runs the real simulators from
+`drift_simulator/` and forwards their results to the agents in
+`agentic_drift_stress/` as if they were observing a model in production.
 
-## Vue d'ensemble
+## Overview
 
 ```mermaid
 flowchart LR
-    subgraph SIM["drift_simulator/ -- pipeline ML réelle + scénarios"]
+    subgraph SIM["drift_simulator/ -- real ML pipeline + scenarios"]
         DATA[("data/diabetes.csv")] --> BASE["baseline/\nBaselineCalculator"]
         BASE --> DRIFT["drift/\nNoDrift · NormalDrift · SevereDrift"]
         MODEL[("models/lgbm_model.pkl")] --> DRIFT
@@ -33,15 +33,15 @@ flowchart LR
     end
 
     subgraph AGENTS["agentic_drift_stress/ -- 7 agents (LangGraph)"]
-        ORCH["orchestrator.py\n(routage par state.trigger)"]
+        ORCH["orchestrator.py\n(routing by state.trigger)"]
     end
 
-    DRIFT -- "features + prédictions du vrai modèle" --> RUNNER
+    DRIFT -- "features + predictions from the real model" --> RUNNER
     RUNNER --> ORCH
     SHAP --> ORCH
-    ORCH -- "alertes" --> SEND
-    ORCH -- "rapport .md / .json / .pdf" --> REPORTS[("reports/<model_id>/")]
-    SEND --> EMAIL(["email HTML pro\n+ pièce jointe PDF"])
+    ORCH -- "alerts" --> SEND
+    ORCH -- "report .md / .json / .pdf" --> REPORTS[("reports/<model_id>/")]
+    SEND --> EMAIL(["professional HTML email\n+ PDF attachment"])
 
     style DATA fill:#EBF5FB,stroke:#2E86C1
     style MODEL fill:#EBF5FB,stroke:#2E86C1
@@ -49,41 +49,41 @@ flowchart LR
     style EMAIL fill:#FDF2F2,stroke:#C0392B
 ```
 
-## Dossier par dossier -- documentation détaillée
+## Folder by folder -- detailed documentation
 
-| Dossier | Rôle | Documentation |
+| Folder | Role | Documentation |
 |---|---|---|
-| `drift_simulator/baseline/` | Calcule et met en cache la distribution de référence (baseline) utilisée par tout le reste comme étalon PSI. | [`drift_simulator/baseline/README.md`](drift_simulator/baseline/README.md) |
-| `drift_simulator/drift/` | Génère les 3 scénarios de dérive (aucune / modérée / sévère) sur le vrai pipeline + le vrai modèle. | [`drift_simulator/drift/README.md`](drift_simulator/drift/README.md) |
-| `agentic_drift_stress/` | Les 7 agents de monitoring (détection, diagnostic, alerting, remédiation, rapport). | [`agentic_drift_stress/README.md`](agentic_drift_stress/README.md) |
-| *(racine)* | Historique technique complet (bugs trouvés, fixes, preuves de vérification). | [`AUDIT_LOG.md`](AUDIT_LOG.md) |
+| `drift_simulator/baseline/` | Computes and caches the reference distribution (baseline) used by everything else as the PSI benchmark. | [`drift_simulator/baseline/README.md`](drift_simulator/baseline/README.md) |
+| `drift_simulator/drift/` | Generates the 3 drift scenarios (none / moderate / severe) on the real pipeline + the real model. | [`drift_simulator/drift/README.md`](drift_simulator/drift/README.md) |
+| `agentic_drift_stress/` | The 7 monitoring agents (detection, diagnosis, alerting, remediation, reporting). | [`agentic_drift_stress/README.md`](agentic_drift_stress/README.md) |
+| *(root)* | Complete technical history (bugs found, fixes, verification evidence). | [`AUDIT_LOG.md`](AUDIT_LOG.md) |
 
-Chaque README ci-dessus est autonome (diagramme + explication + comment le
-lancer isolément) -- celui-ci ne fait que les relier entre eux.
+Each README above is self-contained (diagram + explanation + how to run
+it in isolation) -- this one only links them together.
 
-## Structure du dépôt
+## Repository structure
 
 ```
 .
 ├── drift_simulator/
-│   ├── baseline/            <- référence PSI, cache, validation de schéma (voir son README)
-│   ├── drift/                <- scénarios no/normal/severe_drift (voir son README)
-│   ├── feature_store/         <- feature store offline/online (voir feature_store_demo.py)
-│   ├── src/                    <- pipeline ML "métier" (preprocessing, feature engineering, modeling)
-│   ├── config/                  <- toute la config YAML (aucun seuil/chemin en dur dans le code)
-│   ├── models/lgbm_model.pkl     <- le vrai modèle entraîné
+│   ├── baseline/            <- PSI reference, cache, schema validation (see its README)
+│   ├── drift/                <- no/normal/severe_drift scenarios (see its README)
+│   ├── feature_store/         <- offline/online feature store (see feature_store_demo.py)
+│   ├── src/                    <- "business" ML pipeline (preprocessing, feature engineering, modeling)
+│   ├── config/                  <- all YAML config (no threshold/path hardcoded in the code)
+│   ├── models/lgbm_model.pkl     <- the real trained model
 │   └── data/diabetes.csv          <- Pima Indians Diabetes Dataset
-├── agentic_drift_stress/     <- les 7 agents LangGraph (voir son README)
+├── agentic_drift_stress/     <- the 7 LangGraph agents (see its README)
 ├── bridge/
-│   ├── real_scenario_runner.py   <- instancie les VRAIS simulateurs, extrait
-│   │                                 les prédictions par échantillon du vrai modèle
-│   ├── feature_importance.py     <- contexte SHAP (feature intelligence)
-│   └── senders.py                <- toutes les factories de sender AlertDispatcher
-│                                     (fichier/HTTP local + Slack/SMTP réels)
-├── run_scenario.py            <- point d'entrée : lance un scénario + envoie le rapport par email
-├── mock_alert_server.py       <- serveur FastAPI local pour simuler la réception d'alertes
-├── test_no_drift.py / test_normal_drift.py / test_severe_drift.py   <- démos end-to-end
-├── tests/                      <- suite pytest (26 tests, régressions couvertes)
+│   ├── real_scenario_runner.py   <- instantiates the REAL simulators, extracts
+│   │                                 per-sample predictions from the real model
+│   ├── feature_importance.py     <- SHAP context (feature intelligence)
+│   └── senders.py                <- all AlertDispatcher sender factories
+│                                     (local file/HTTP + real Slack/SMTP)
+├── run_scenario.py            <- entry point: runs a scenario + emails the report
+├── mock_alert_server.py       <- local FastAPI server to simulate alert reception
+├── test_no_drift.py / test_normal_drift.py / test_severe_drift.py   <- end-to-end demos
+├── tests/                      <- pytest suite (26 tests, regressions covered)
 └── requirements.txt
 ```
 
@@ -93,7 +93,7 @@ lancer isolément) -- celui-ci ne fait que les relier entre eux.
 pip install -r requirements.txt
 ```
 
-## Lancer les 3 scénarios
+## Running the 3 scenarios
 
 ```bash
 python3 test_no_drift.py
@@ -101,58 +101,63 @@ python3 test_normal_drift.py
 python3 test_severe_drift.py
 ```
 
-Chaque script fait tourner le vrai pipeline (`drift_simulator/`), transmet
-les résultats aux 7 agents (`agentic_drift_stress/`), affiche le résumé dans
-le terminal, et écrit un rapport de diagnostic complet (Markdown + JSON +
-PDF) sous `reports/<model_id>/`.
+Each script runs the real pipeline (`drift_simulator/`), forwards the
+results to the 7 agents (`agentic_drift_stress/`), prints a summary to
+the terminal, and writes a full diagnostic report (Markdown + JSON +
+PDF) under `reports/<model_id>/`.
 
-Résultats obtenus (pipeline réelle, vérifiés dans cet environnement) :
+Results obtained (real pipeline, verified in this environment):
 
-| Scénario | Statut natif (`drift_simulator`) | Sévérité (`agentic_drift_stress`) | Alertes |
+| Scenario | Native status (`drift_simulator`) | Severity (`agentic_drift_stress`) | Alerts |
 |---|---|---|---|
 | `no_drift` | OK | `DriftSeverity.NONE` | 0 |
 | `normal_drift` | WARNING | `DriftSeverity.CRITICAL` | 6 (data_drift ×4, performance_drift, root_cause) |
-| `severe_drift` | severe (SLA respecté) | `DriftSeverity.CRITICAL` | 9 (dont 1 `PAGE`) |
+| `severe_drift` | severe (SLA met) | `DriftSeverity.CRITICAL` | 9 (including 1 `PAGE`) |
 
-> Pourquoi `drift_simulator` dit WARNING et `agentic_drift_stress` dit
-> CRITICAL sur le même scénario `normal_drift` : les deux ont chacun leur
-> propre implémentation de seuils PSI -- **attendu**, voir
-> [`drift_simulator/drift/README.md`](drift_simulator/drift/README.md) et
+> Why `drift_simulator` says WARNING and `agentic_drift_stress` says
+> CRITICAL on the same `normal_drift` scenario: each has its own
+> implementation of PSI thresholds -- **expected**, see
+> [`drift_simulator/drift/README.md`](drift_simulator/drift/README.md) and
 > [`agentic_drift_stress/README.md`](agentic_drift_stress/README.md).
 
-Accuracy du vrai modèle LightGBM sur la baseline : **0.935** (F1 = 0.906).
+Real LightGBM model accuracy on the baseline: **0.935** (F1 = 0.906).
 
-## Serveur d'alertes FastAPI (optionnel) -- toujours une SIMULATION
+## FastAPI alert server (optional) -- always a SIMULATION
 
 ```bash
 uvicorn mock_alert_server:app --port 8000
 ```
 
-`run_scenario.py` détecte automatiquement le serveur (`GET /health`) et
-envoie les alertes CRITICAL **aussi** par HTTP (`POST /email`), en plus du
-fichier local `email_alert_log.jsonl`. Ceci reste une simulation : aucun
-email n'est réellement livré, même avec ce serveur -- il journalise juste
-la requête HTTP reçue.
+`run_scenario.py` automatically detects the server (`GET /health`) and
+**also** sends CRITICAL alerts via HTTP (`POST /email`), in addition to
+the local `email_alert_log.jsonl` file. This remains a simulation: no
+email is actually delivered, even with this server -- it just logs the
+HTTP request received.
 
-Endpoints : `POST /email`, `POST /slack`, `GET /alerts`, `DELETE /alerts`, `GET /health`.
+Endpoints: `POST /email`, `POST /slack`, `GET /alerts`, `DELETE /alerts`, `GET /health`.
 
-## Envoyer un VRAI email (SMTP)
+## Sending a REAL email (SMTP)
 
 ```bash
 export SMTP_HOST=smtp.gmail.com
 export SMTP_PORT=587
-export SMTP_USER=vous@gmail.com
-export SMTP_PASSWORD=xxxx-xxxx-xxxx-xxxx   # mot de passe d'application Gmail, pas votre mdp normal
-export ALERT_EMAIL_FROM=vous@gmail.com
-export ALERT_EMAIL_TO=ml-oncall@votreentreprise.com
+export SMTP_USER=you@gmail.com
+export SMTP_PASSWORD=xxxx-xxxx-xxxx-xxxx   # Gmail app password, not your regular password
+export ALERT_EMAIL_FROM=you@gmail.com
+export ALERT_EMAIL_TO=ml-oncall@yourcompany.com
 
 python3 test_severe_drift.py
 ```
 
-`bridge/senders.py` détecte automatiquement `SMTP_HOST` -- priorité sur le
-mock FastAPI et le fichier local (les deux restent actifs en parallèle pour
-la traçabilité). Chaque alerte part en HTML (badge + couleur par priorité),
-et le résumé exécutif de fin de cycle part avec le rapport de diagnostic
-complet **en pièce jointe PDF**.
+`bridge/senders.py` automatically detects `SMTP_HOST` -- taking priority
+over the mock FastAPI server and the local file (both stay active in
+parallel for traceability). Each alert goes out as HTML (badge + color
+by priority), and the end-of-cycle executive summary goes out with the
+full diagnostic report **attached as a PDF**.
 
+## Technical history
 
+All bugs found, fixes applied, and verification evidence (tests, real
+runs) are in [`AUDIT_LOG.md`](AUDIT_LOG.md) -- kept separate from this
+README so this one stays a project presentation, not a changelog to
+scroll through.
