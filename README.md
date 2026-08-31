@@ -56,7 +56,7 @@ flowchart LR
 | `drift_simulator/baseline/` | Computes and caches the reference distribution (baseline) used by everything else as the PSI benchmark. | [`drift_simulator/baseline/README.md`](drift_simulator/baseline/README.md) |
 | `drift_simulator/drift/` | Generates the 3 drift scenarios (none / moderate / severe) on the real pipeline + the real model. | [`drift_simulator/drift/README.md`](drift_simulator/drift/README.md) |
 | `agentic_drift_stress/` | The 7 monitoring agents (detection, diagnosis, alerting, remediation, reporting). | [`agentic_drift_stress/README.md`](agentic_drift_stress/README.md) |
-| *(root)* | Complete technical history (bugs found, fixes, verification evidence). | [`AUDIT_LOG.md`](AUDIT_LOG.md) |
+
 
 Each README above is self-contained (diagram + explanation + how to run
 it in isolation) -- this one only links them together.
@@ -154,10 +154,3 @@ over the mock FastAPI server and the local file (both stay active in
 parallel for traceability). Each alert goes out as HTML (badge + color
 by priority), and the end-of-cycle executive summary goes out with the
 full diagnostic report **attached as a PDF**.
-
-## Technical history
-
-All bugs found, fixes applied, and verification evidence (tests, real
-runs) are in [`AUDIT_LOG.md`](AUDIT_LOG.md) -- kept separate from this
-README so this one stays a project presentation, not a changelog to
-scroll through.
