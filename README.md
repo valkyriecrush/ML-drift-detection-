@@ -55,7 +55,8 @@ flowchart LR
 |---|---|---|
 | `drift_simulator/baseline/` | Calcule et met en cache la distribution de référence (baseline) utilisée par tout le reste comme étalon PSI. | [`drift_simulator/baseline/README.md`](drift_simulator/baseline/README.md) |
 | `drift_simulator/drift/` | Génère les 3 scénarios de dérive (aucune / modérée / sévère) sur le vrai pipeline + le vrai modèle. | [`drift_simulator/drift/README.md`](drift_simulator/drift/README.md) |
-| `agentic_drift_stress/` | Les 7 agents de monitoring (détection, diagnostic, alerting, remédiation, rapport). | [`agentic_drift_stress/README.md`](agentic_drift_stress/README.md) || *(racine)* | Historique technique complet (bugs trouvés, fixes, preuves de vérification). | [`AUDIT_LOG.md`](AUDIT_LOG.md) |
+| `agentic_drift_stress/` | Les 7 agents de monitoring (détection, diagnostic, alerting, remédiation, rapport). | [`agentic_drift_stress/README.md`](agentic_drift_stress/README.md) |
+| *(racine)* | Historique technique complet (bugs trouvés, fixes, preuves de vérification). | [`AUDIT_LOG.md`](AUDIT_LOG.md) |
 
 Chaque README ci-dessus est autonome (diagramme + explication + comment le
 lancer isolément) -- celui-ci ne fait que les relier entre eux.
